@@ -28,7 +28,7 @@ github_username:  yekyam
 paginate: 5
 
 # Build settings
-remote_theme: pages-themes/midnight@v0.2.0
+theme: midnight
 plugins:
   - jekyll-feed
   - jekyll-remote-theme
