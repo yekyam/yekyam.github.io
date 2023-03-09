@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2023-03-09T00:35:04-05:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Manuel Mateo’s Site</title><subtitle>My site, which contains my articles, contact info, and projects</subtitle><entry><title type="html">Dev Log: Extremely Basic OpenGL Renderer</title><link href="http://localhost:4000/2023/02/26/dev_log_sogl.html" rel="alternate" type="text/html" title="Dev Log: Extremely Basic OpenGL Renderer" /><published>2023-02-26T00:00:00-05:00</published><updated>2023-02-26T00:00:00-05:00</updated><id>http://localhost:4000/2023/02/26/dev_log_sogl</id><content type="html" xml:base="http://localhost:4000/2023/02/26/dev_log_sogl.html"><![CDATA[<p>Original post found <a href="https://dev.to/yekyam/dev-log-extremely-basic-opengl-renderer-i40">here</a></p>
+
+<h2 id="some-background">Some Background</h2>
+
+<p>Since the beginning of my programming journey, I’ve always been drawn to the idea of creating projects from the ground up with minimal third party code.</p>
+
+<p>One of those projects was to play around with graphics, and this time I actually stuck with it.</p>
+
+<h2 id="starting-the-project">Starting the Project</h2>
+
+<p>I decided to follow along the <a href="https://learnopengl.com/">Learn OpenGL</a> tutorial. Although I found it useful for code, some of its explanations weren’t clicking with me.</p>
+
+<p>I was confused on how vertex array objects (VAOs) and vertex buffer objects (VBOs) fit together, and given that they’re the fundamental building blocks of OpenGL, I was in a bad place. Eventually, afters tons of googling and youtube, it finally clicked.</p>
+
+<p>I think the reason I was struggling so much was because I didn’t understand that VAOs and VBOs are fundamentally linked. See, VAOs not only hold the specified layout of VBOs, they also hold the VBO data itself. It’s kind of weird (thanks state machine!), and newer versions of OpenGL separate out the formatting of the data and the actual binding of the data (see <a href="https://github.com/fendevel/Guide-to-Modern-OpenGL-Functions#glvertexattribformat--glbindvertexbuffer">direct state access (DSA)</a>).</p>
+
+<h2 id="building-out-abstractions">Building out abstractions</h2>
+
+<p>Once I understood that VAOs and VBOs can’t be separated out (in OpenGL versions below 4.5), this made programming an abstraction around them fairly trivial.</p>
+
+<p>I started out with the most basic data, the vertex. I don’t care about textures or even lighting for this first run at OpenGL, so for now my vertices contain only position information and color information.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>struct Vertex
+{
+    std::array&lt;GLfloat, 3&gt; position;
+    std::array&lt;GLfloat, 3&gt; color;
+
+    // constructor and std::ostream&amp; operator&lt;&lt; defined here
+};
+</code></pre></div></div>
+
+<p>Great! I had a way to represent a single vertex, but you can’t do much with that.</p>
+
+<p>So, I created a class to represent a group of vertices.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>struct Mesh
+{
+    std::vector&lt;Vertex&gt; vertices;
+
+    // constructors
+};
+</code></pre></div></div>
+
+<p>There’s something missing. See, in OpenGL, because everything is defined as a set of triangles, sometimes you’ll get some overlap. Imagine the face of a cube:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>1-----2
+|     |
+|     |
+3-----4
+</code></pre></div></div>
+<p>The two triangles that make up the face are: 123, 324.</p>
+
+<p>That’s kind of a waste, right? We shouldn’t have to define duplicate vertices.</p>
+
+<p>Luckily, OpenGL solves that by introducing element buffer objects (EBOs). EBOs hold indices, meaning that we don’t need to duplicate our vertices in memory.</p>
+
+<p>So, the new <code class="language-plaintext highlighter-rouge">Mesh</code> struct looks like this:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>struct Mesh
+{
+    std::vector&lt;Vertex&gt; vertices;
+    std::vector&lt;GLushort&gt; indices;
+
+    // constructors
+};
+</code></pre></div></div>
+
+<p>Great! I can now represent the vertices and indices of a mesh.</p>
+
+<p>But now I need a way to actually send these vertices and indices to OpenGL.</p>
+
+<p>So, I created a <code class="language-plaintext highlighter-rouge">Model</code> class. This class represents a <code class="language-plaintext highlighter-rouge">Mesh</code> and its OpenGL data too, including VBOs, VAO, and EBO.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>class Model
+{
+    Mesh m_mesh;
+    GLuint m_vao;
+    GLuint m_vbos[2];
+    GLuint m_ebo;
+
+    // constructors, convenience functions, destructor
+};
+</code></pre></div></div>
+
+<p>Lastly, I needed a way to actually draw the <code class="language-plaintext highlighter-rouge">Model</code> to the screen and keep track of the models.</p>
+
+<p>I decided to create a <code class="language-plaintext highlighter-rouge">Renderer</code> class to keep track of camera matrices and handle all of the drawing. That way, I could keep my <code class="language-plaintext highlighter-rouge">Model</code> separate from the drawing code.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>class Renderer
+{
+public:
+    std::list&lt;std::unique_ptr&lt;Model&gt;&gt; models; 
+    int mode; // GL_POINTS, GL_TRIANGLES, or GL_LINES
+    // other members excluded for brevity, but shader is included
+    
+    // constructor
+
+    // function to add model to models
+
+    void draw_models()
+    {
+        // clear the screen, color buffer, and depth buffer
+        // use the shader
+        // setup view matrices
+        // setup shader uniforms
+        for (const auto&amp; model : models)
+        {
+            glBindVertexArray(model-&gt;m_vao);
+            glDrawElements(mode, model-m_mesh.indices.size(), GL_UNSIGNED_SHORT, 0);
+            glBindVertexArray(0);
+        }
+    }
+    
+};
+</code></pre></div></div>
+
+<h2 id="loading-models-from-files">Loading Models from Files</h2>
+
+<p>I had the foundation of a renderer, but it’s quite boring if I was staring at an empty screen the entire time.</p>
+
+<p>So, I decided to create a function to load a <code class="language-plaintext highlighter-rouge">.obj</code> file into a <code class="language-plaintext highlighter-rouge">Model</code>.</p>
+
+<p>Luckily, the file format is fairly simple, it looks something like this:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>v 0.5. 0.5 0.5
+...
+vt 1.0 1.0
+...
+vn 1.0 1.0 1.0
+...
+f 1 2 3
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">v</code> denotes the vertex positions (x, y, z).
+<code class="language-plaintext highlighter-rouge">vt</code> denotes texture coordinates, which I ignored to keep things simple.
+<code class="language-plaintext highlighter-rouge">vn</code> denotes the surface normals, which I also ignored.
+<code class="language-plaintext highlighter-rouge">f</code> denotes the indices of the triangles.</p>
+
+<p>So, I created a function to loop through all of the lines and either add the vertices and indices to vectors.</p>
+
+<p>However, I did run into two subtle bugs that were easy to fix:</p>
+
+<ol>
+  <li>The indices are 0 indexed, not 1 indexed, so when adding the indices to the the vector I had to subtract 1.</li>
+  <li>Some lines of the face actually define quads instead of triangles, so the line looks like:</li>
+</ol>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>f 1 2 3 4
+</code></pre></div></div>
+<p>After fixing the two bugs, I had a passable <code class="language-plaintext highlighter-rouge">.obj</code> loader I could use.</p>
+
+<h2 id="finishing-touches">Finishing Touches</h2>
+
+<p>Once that was done, I decided to add some command line arguments, mainly to specify the <code class="language-plaintext highlighter-rouge">.obj</code> file to load, specify the mode to render with (GL_POINTS, GL_LINES, or GL_TRIANGLES), and the ability to change the camera’s distance from the model.</p>
+
+<p>Here’s the classic Utah teapot rendered as a wireframe:</p>
+
+<p><img src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/9mhkunj9qxua3etdjts8.png" alt="A wireframe render of the Utah teapot" /></p>
+
+<p><a href="https://github.com/yekyam/SOGL-Renderer">Here’s the link to the GitHub repo.</a></p>
+
+<h2 id="final-thoughts-and-next-steps">Final Thoughts and Next Steps</h2>
+
+<p>Overall, this was a fun project. It was nice to get something visual done, and I’m glad I finally understand how OpenGL work.</p>
+
+<p>I’m not particularly happy with the code, mainly the argument parsing and the raw <code class="language-plaintext highlighter-rouge">glfw</code> calls I make in <code class="language-plaintext highlighter-rouge">main()</code>, but I’m glad it works.</p>
+
+<p>Outside of <code class="language-plaintext highlighter-rouge">main()</code>, I do think the abstractions I made over the vertices and OpenGL itself isn’t too bad, and in a future renderer I’ll probably work off of this foundation.</p>
+
+<p>There are two features I’d like to add to this renderer:</p>
+<ul>
+  <li>The ability to specify model color in the command line args</li>
+  <li>Basic lighting</li>
+</ul>
+
+<p>Once (or if) I get those done, I think I’ll leave the project as-is. It was a great learning experience, and it’ll be interesting to see how any future renderers I make compare to this one.</p>
+
+<p>In the future, I’ll probably try to look into Vulkan, I’m interested in the fact that the API –although much more verbose– looks a whole lot cleaner than OpenGL.</p>
+
+<h4 id="tips-for-other-opengl-beginners">Tips for other OpenGL beginners</h4>
+
+<ul>
+  <li>
+    <p>Don’t attempt to learn OpenGL if you don’t know memory management and how pointers work, you will have a bad time.</p>
+  </li>
+  <li>
+    <p>OpenGL 3.3 is a bad API due to its state machine. If possible, try to learn OpenGL 4.5+ (yes, I know tutorials are sparse, but it seems easier to learn)</p>
+  </li>
+  <li>
+    <p>VAOs and VBOs are linked due to the state machine architecture, there’s no real way to separate them out.</p>
+  </li>
+</ul>]]></content><author><name></name></author><summary type="html"><![CDATA[Original post found here]]></summary></entry><entry><title type="html">The Key to C</title><link href="http://localhost:4000/2022/11/30/the_key_to_c.html" rel="alternate" type="text/html" title="The Key to C" /><published>2022-11-30T00:00:00-05:00</published><updated>2022-11-30T00:00:00-05:00</updated><id>http://localhost:4000/2022/11/30/the_key_to_c</id><content type="html" xml:base="http://localhost:4000/2022/11/30/the_key_to_c.html"><![CDATA[<p>Original post found <a href="https://dev.to/yekyam/the-key-to-c-n6i">here</a></p>
+
+<h2 id="c-for-beginners">C for Beginners?</h2>
+<p>Let’s be clear here: no matter the popularity, C is a difficult language for beginners. To truly understand C, beginners have to learn both about programming and hardware, two very deep and complex topics.</p>
+
+<p>In this article, I’ll attempt to bridge the two.</p>
+
+<h3 id="some-background-types-what-are-they">Some background: Types? What are they?</h3>
+
+<p>A type is simply a description of a variable. More precisely, a type describes what operations can be performed with the given data.</p>
+
+<h2 id="the-key-to-c-types-are-an-illusion">The Key to C: Types are an Illusion</h2>
+
+<p>To truly understand C, one must view an entire program in terms of operations on interpretations of raw data.</p>
+
+<p><em>Operations on interpretations of raw data? What does that mean?</em></p>
+
+<p>Let’s break that down with an example:</p>
+
+<p>A <code class="language-plaintext highlighter-rouge">char</code> isn’t just a single character, it’s an interpretation of the data one byte holds. For example, this block of code is perfectly valid:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>char x = '2';
+char y = '2';
+
+char z = x + y;
+printf("%d\n", (int)z); // Outputs '100'
+</code></pre></div></div>
+
+<p>Again, <code class="language-plaintext highlighter-rouge">char</code> is just an interpretation of the data. Sure, most of the time, a <code class="language-plaintext highlighter-rouge">char</code> refers to an actual character, but the only guarantee C gives us is that a char is exactly one byte.</p>
+
+<p>In the example code, I performed an operation (addition) on raw data, even though the data is interpreted as characters. In ASCII, ‘2’ is represented by the decimal number 50.</p>
+
+<p><em>Viewing types as illusions simplifies all of the more difficult topics in C.</em></p>
+
+<p>Sure, you can view an <code class="language-plaintext highlighter-rouge">int</code> is a number, but then what is an <code class="language-plaintext highlighter-rouge">int*</code>? It points to a number? What does that even mean?</p>
+
+<p>Or, you can view an <code class="language-plaintext highlighter-rouge">int</code> is a (typically) 4 byte block of memory on the stack, and an <code class="language-plaintext highlighter-rouge">int*</code> holds a number that is usually the address of a (typically) 4 byte block.</p>
+
+<p>Yes, it’s a mouthful, but until this line of thinking becomes intuitive, it’s important to break down components of a program in that manner to truly understand C.</p>
+
+<p>If C hasn’t clicked for you yet, try viewing your programs in the way I’ve described. You’ll surprise yourself!</p>]]></content><author><name></name></author><summary type="html"><![CDATA[Original post found here]]></summary></entry><entry><title type="html">The Beginner’s Axioms</title><link href="http://localhost:4000/2021/09/27/the_beginners_axioms.html" rel="alternate" type="text/html" title="The Beginner’s Axioms" /><published>2021-09-27T00:00:00-04:00</published><updated>2021-09-27T00:00:00-04:00</updated><id>http://localhost:4000/2021/09/27/the_beginners_axioms</id><content type="html" xml:base="http://localhost:4000/2021/09/27/the_beginners_axioms.html"><![CDATA[<h1 id="the-zen-of-python">The Zen of Python</h1>
+<p>The Zen of Python is a collection of guidelines for writing software, primarily aims towards (you guessed it) Python. It’s a short list, but its worth its weight in gold. The guidelines talk about issues like code structure and how a program should look.</p>
+
+<h1 id="the-beginners-axioms">The Beginner’s Axioms</h1>
+<p>I thought it’d be fun to make my own list, which I dub <em>The Beginner’s Axioms</em>. Its a short list of guidelines I wish I could’ve handed to myself when I first started learning how to program.</p>
+
+<ul>
+  <li>Learn slowly, forget slowly</li>
+  <li>Writing is better than reading.</li>
+  <li>When reading, official is better than unofficial.</li>
+  <li>Bad code is better than no code.</li>
+  <li>Mistakes are better than no mistakes.</li>
+  <li>The first step to fixing a problem is admission.</li>
+  <li>Community is better than solitude.</li>
+  <li>Comments, comments, comments.</li>
+  <li>Experiment, experiment, experiment.</li>
+</ul>]]></content><author><name></name></author><summary type="html"><![CDATA[The Zen of Python The Zen of Python is a collection of guidelines for writing software, primarily aims towards (you guessed it) Python. It’s a short list, but its worth its weight in gold. The guidelines talk about issues like code structure and how a program should look.]]></summary></entry></feed>

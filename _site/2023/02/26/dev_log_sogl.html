@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Dev Log: Extremely Basic OpenGL Renderer | Manuel Mateo’s Site</title>
+<meta name="generator" content="Jekyll v4.3.2" />
+<meta property="og:title" content="Dev Log: Extremely Basic OpenGL Renderer" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Original post found here" />
+<meta property="og:description" content="Original post found here" />
+<link rel="canonical" href="http://localhost:4000/2023/02/26/dev_log_sogl.html" />
+<meta property="og:url" content="http://localhost:4000/2023/02/26/dev_log_sogl.html" />
+<meta property="og:site_name" content="Manuel Mateo’s Site" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2023-02-26T00:00:00-05:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Dev Log: Extremely Basic OpenGL Renderer" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2023-02-26T00:00:00-05:00","datePublished":"2023-02-26T00:00:00-05:00","description":"Original post found here","headline":"Dev Log: Extremely Basic OpenGL Renderer","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/2023/02/26/dev_log_sogl.html"},"url":"http://localhost:4000/2023/02/26/dev_log_sogl.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Manuel Mateo&apos;s Site" /></head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">Manuel Mateo&#39;s Site</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/about/">About</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Dev Log: Extremely Basic OpenGL Renderer</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2023-02-26T00:00:00-05:00" itemprop="datePublished">Feb 26, 2023
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>Original post found <a href="https://dev.to/yekyam/dev-log-extremely-basic-opengl-renderer-i40">here</a></p>
+
+<h2 id="some-background">Some Background</h2>
+
+<p>Since the beginning of my programming journey, I’ve always been drawn to the idea of creating projects from the ground up with minimal third party code.</p>
+
+<p>One of those projects was to play around with graphics, and this time I actually stuck with it.</p>
+
+<h2 id="starting-the-project">Starting the Project</h2>
+
+<p>I decided to follow along the <a href="https://learnopengl.com/">Learn OpenGL</a> tutorial. Although I found it useful for code, some of its explanations weren’t clicking with me.</p>
+
+<p>I was confused on how vertex array objects (VAOs) and vertex buffer objects (VBOs) fit together, and given that they’re the fundamental building blocks of OpenGL, I was in a bad place. Eventually, afters tons of googling and youtube, it finally clicked.</p>
+
+<p>I think the reason I was struggling so much was because I didn’t understand that VAOs and VBOs are fundamentally linked. See, VAOs not only hold the specified layout of VBOs, they also hold the VBO data itself. It’s kind of weird (thanks state machine!), and newer versions of OpenGL separate out the formatting of the data and the actual binding of the data (see <a href="https://github.com/fendevel/Guide-to-Modern-OpenGL-Functions#glvertexattribformat--glbindvertexbuffer">direct state access (DSA)</a>).</p>
+
+<h2 id="building-out-abstractions">Building out abstractions</h2>
+
+<p>Once I understood that VAOs and VBOs can’t be separated out (in OpenGL versions below 4.5), this made programming an abstraction around them fairly trivial.</p>
+
+<p>I started out with the most basic data, the vertex. I don’t care about textures or even lighting for this first run at OpenGL, so for now my vertices contain only position information and color information.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>struct Vertex
+{
+    std::array&lt;GLfloat, 3&gt; position;
+    std::array&lt;GLfloat, 3&gt; color;
+
+    // constructor and std::ostream&amp; operator&lt;&lt; defined here
+};
+</code></pre></div></div>
+
+<p>Great! I had a way to represent a single vertex, but you can’t do much with that.</p>
+
+<p>So, I created a class to represent a group of vertices.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>struct Mesh
+{
+    std::vector&lt;Vertex&gt; vertices;
+
+    // constructors
+};
+</code></pre></div></div>
+
+<p>There’s something missing. See, in OpenGL, because everything is defined as a set of triangles, sometimes you’ll get some overlap. Imagine the face of a cube:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>1-----2
+|     |
+|     |
+3-----4
+</code></pre></div></div>
+<p>The two triangles that make up the face are: 123, 324.</p>
+
+<p>That’s kind of a waste, right? We shouldn’t have to define duplicate vertices.</p>
+
+<p>Luckily, OpenGL solves that by introducing element buffer objects (EBOs). EBOs hold indices, meaning that we don’t need to duplicate our vertices in memory.</p>
+
+<p>So, the new <code class="language-plaintext highlighter-rouge">Mesh</code> struct looks like this:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>struct Mesh
+{
+    std::vector&lt;Vertex&gt; vertices;
+    std::vector&lt;GLushort&gt; indices;
+
+    // constructors
+};
+</code></pre></div></div>
+
+<p>Great! I can now represent the vertices and indices of a mesh.</p>
+
+<p>But now I need a way to actually send these vertices and indices to OpenGL.</p>
+
+<p>So, I created a <code class="language-plaintext highlighter-rouge">Model</code> class. This class represents a <code class="language-plaintext highlighter-rouge">Mesh</code> and its OpenGL data too, including VBOs, VAO, and EBO.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>class Model
+{
+    Mesh m_mesh;
+    GLuint m_vao;
+    GLuint m_vbos[2];
+    GLuint m_ebo;
+
+    // constructors, convenience functions, destructor
+};
+</code></pre></div></div>
+
+<p>Lastly, I needed a way to actually draw the <code class="language-plaintext highlighter-rouge">Model</code> to the screen and keep track of the models.</p>
+
+<p>I decided to create a <code class="language-plaintext highlighter-rouge">Renderer</code> class to keep track of camera matrices and handle all of the drawing. That way, I could keep my <code class="language-plaintext highlighter-rouge">Model</code> separate from the drawing code.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>class Renderer
+{
+public:
+    std::list&lt;std::unique_ptr&lt;Model&gt;&gt; models; 
+    int mode; // GL_POINTS, GL_TRIANGLES, or GL_LINES
+    // other members excluded for brevity, but shader is included
+    
+    // constructor
+
+    // function to add model to models
+
+    void draw_models()
+    {
+        // clear the screen, color buffer, and depth buffer
+        // use the shader
+        // setup view matrices
+        // setup shader uniforms
+        for (const auto&amp; model : models)
+        {
+            glBindVertexArray(model-&gt;m_vao);
+            glDrawElements(mode, model-m_mesh.indices.size(), GL_UNSIGNED_SHORT, 0);
+            glBindVertexArray(0);
+        }
+    }
+    
+};
+</code></pre></div></div>
+
+<h2 id="loading-models-from-files">Loading Models from Files</h2>
+
+<p>I had the foundation of a renderer, but it’s quite boring if I was staring at an empty screen the entire time.</p>
+
+<p>So, I decided to create a function to load a <code class="language-plaintext highlighter-rouge">.obj</code> file into a <code class="language-plaintext highlighter-rouge">Model</code>.</p>
+
+<p>Luckily, the file format is fairly simple, it looks something like this:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>v 0.5. 0.5 0.5
+...
+vt 1.0 1.0
+...
+vn 1.0 1.0 1.0
+...
+f 1 2 3
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">v</code> denotes the vertex positions (x, y, z).
+<code class="language-plaintext highlighter-rouge">vt</code> denotes texture coordinates, which I ignored to keep things simple.
+<code class="language-plaintext highlighter-rouge">vn</code> denotes the surface normals, which I also ignored.
+<code class="language-plaintext highlighter-rouge">f</code> denotes the indices of the triangles.</p>
+
+<p>So, I created a function to loop through all of the lines and either add the vertices and indices to vectors.</p>
+
+<p>However, I did run into two subtle bugs that were easy to fix:</p>
+
+<ol>
+  <li>The indices are 0 indexed, not 1 indexed, so when adding the indices to the the vector I had to subtract 1.</li>
+  <li>Some lines of the face actually define quads instead of triangles, so the line looks like:</li>
+</ol>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>f 1 2 3 4
+</code></pre></div></div>
+<p>After fixing the two bugs, I had a passable <code class="language-plaintext highlighter-rouge">.obj</code> loader I could use.</p>
+
+<h2 id="finishing-touches">Finishing Touches</h2>
+
+<p>Once that was done, I decided to add some command line arguments, mainly to specify the <code class="language-plaintext highlighter-rouge">.obj</code> file to load, specify the mode to render with (GL_POINTS, GL_LINES, or GL_TRIANGLES), and the ability to change the camera’s distance from the model.</p>
+
+<p>Here’s the classic Utah teapot rendered as a wireframe:</p>
+
+<p><img src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/9mhkunj9qxua3etdjts8.png" alt="A wireframe render of the Utah teapot" /></p>
+
+<p><a href="https://github.com/yekyam/SOGL-Renderer">Here’s the link to the GitHub repo.</a></p>
+
+<h2 id="final-thoughts-and-next-steps">Final Thoughts and Next Steps</h2>
+
+<p>Overall, this was a fun project. It was nice to get something visual done, and I’m glad I finally understand how OpenGL work.</p>
+
+<p>I’m not particularly happy with the code, mainly the argument parsing and the raw <code class="language-plaintext highlighter-rouge">glfw</code> calls I make in <code class="language-plaintext highlighter-rouge">main()</code>, but I’m glad it works.</p>
+
+<p>Outside of <code class="language-plaintext highlighter-rouge">main()</code>, I do think the abstractions I made over the vertices and OpenGL itself isn’t too bad, and in a future renderer I’ll probably work off of this foundation.</p>
+
+<p>There are two features I’d like to add to this renderer:</p>
+<ul>
+  <li>The ability to specify model color in the command line args</li>
+  <li>Basic lighting</li>
+</ul>
+
+<p>Once (or if) I get those done, I think I’ll leave the project as-is. It was a great learning experience, and it’ll be interesting to see how any future renderers I make compare to this one.</p>
+
+<p>In the future, I’ll probably try to look into Vulkan, I’m interested in the fact that the API –although much more verbose– looks a whole lot cleaner than OpenGL.</p>
+
+<h4 id="tips-for-other-opengl-beginners">Tips for other OpenGL beginners</h4>
+
+<ul>
+  <li>
+    <p>Don’t attempt to learn OpenGL if you don’t know memory management and how pointers work, you will have a bad time.</p>
+  </li>
+  <li>
+    <p>OpenGL 3.3 is a bad API due to its state machine. If possible, try to learn OpenGL 4.5+ (yes, I know tutorials are sparse, but it seems easier to learn)</p>
+  </li>
+  <li>
+    <p>VAOs and VBOs are linked due to the state machine architecture, there’s no real way to separate them out.</p>
+  </li>
+</ul>
+
+  </div><a class="u-url" href="/2023/02/26/dev_log_sogl.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Manuel Mateo&#39;s Site</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Manuel Mateo&#39;s Site</li><li><a class="u-email" href="mailto:manuel.mateo1357@gmail.com">manuel.mateo1357@gmail.com</a></li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/yekyam"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">yekyam</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>My site, which contains my articles, contact info, and projects</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
