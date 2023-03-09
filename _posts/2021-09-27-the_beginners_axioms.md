@@ -3,6 +3,8 @@ layout: post
 title: "The Beginner's Axioms"
 ---
 
+Original post found [here](https://dev.to/yekyam/the-beginner-s-axioms-2o88)
+
 # The Zen of Python
 The Zen of Python is a collection of guidelines for writing software, primarily aims towards (you guessed it) Python. It's a short list, but its worth its weight in gold. The guidelines talk about issues like code structure and how a program should look.
 
