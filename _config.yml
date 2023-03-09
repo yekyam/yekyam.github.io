@@ -26,6 +26,7 @@ baseurl: "" # the subpath of your site, e.g. /blog
 url: "" # the base hostname & protocol for your site, e.g. http://example.com
 github_username:  yekyam
 paginate: 5
+mode: dark
 
 # Build settings
 remote_theme: piharpi/jekyll-klise
