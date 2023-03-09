@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: default
 title: "Dev Log: Extremely Basic OpenGL Renderer"
 ---
 
