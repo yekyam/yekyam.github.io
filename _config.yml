@@ -28,7 +28,7 @@ github_username:  yekyam
 paginate: 5
 
 # Build settings
-remote_theme: broccolini/swiss
+remote_theme: piharpi/jekyll-klise
 theme_color: black
 plugins:
   - jekyll-feed
