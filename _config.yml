@@ -32,10 +32,10 @@ remote_theme: pages-themes/midnight@v0.2.0
 plugins:
   - jekyll-feed
   - jekyll-remote-theme
-
+g
 lsi: false
 safe: true
-source: [your repo's top level directory]
+source: portfolio
 incremental: false
 highlighter: rouge
 gist:
