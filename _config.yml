@@ -28,6 +28,12 @@ github_username:  yekyam
 paginate: 5
 mode: dark
 
+author:
+  name: Manuel Mateo
+  github: yekyam
+  email: manuel.mateo1357@gmail.com
+    
+
 # Build settings
 remote_theme: piharpi/jekyll-klise
 theme_color: black
