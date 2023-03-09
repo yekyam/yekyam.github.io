@@ -190,8 +190,8 @@ In the future, I'll probably try to look into Vulkan, I'm interested in the fact
 
 #### Tips for other OpenGL beginners
 
-* Don't attempt to learn OpenGL if you don't know memory management and how pointers work, you will have a bad time.
+1. Don't attempt to learn OpenGL if you don't know memory management and how pointers work, you will have a bad time.
  
-* OpenGL 3.3 is a bad API due to its state machine. If possible, try to learn OpenGL 4.5+ (yes, I know tutorials are sparse, but it seems easier to learn)
+2. OpenGL 3.3 is a bad API due to its state machine. If possible, try to learn OpenGL 4.5+ (yes, I know tutorials are sparse, but it seems easier to learn)
 
-* VAOs and VBOs are linked due to the state machine architecture, there's no real way to separate them out.
+3. VAOs and VBOs are linked due to the state machine architecture, there's no real way to separate them out.
