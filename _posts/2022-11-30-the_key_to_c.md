@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "The Key to C"
+date: 2022-11-30
 ---
 
 Original post found [here](https://dev.to/yekyam/the-key-to-c-n6i)

@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "The Beginner's Axioms"
+date: 2021-09-27
 ---
 
 Original post found [here](https://dev.to/yekyam/the-beginner-s-axioms-2o88)

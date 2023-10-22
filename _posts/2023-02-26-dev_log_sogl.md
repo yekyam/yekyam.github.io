@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "Dev Log: Extremely Basic OpenGL Renderer"
+date: 2023-02-26
 ---
 
 Original post found [here](https://dev.to/yekyam/dev-log-extremely-basic-opengl-renderer-i40) 

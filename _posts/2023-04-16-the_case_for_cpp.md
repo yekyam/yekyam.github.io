@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "The Case for C++"
+date: 2023-04-16
 ---
 
 # Formalizing C Patterns: The Case for C++
