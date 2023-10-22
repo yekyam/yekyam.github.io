@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Programmng is Difficult"
+title: "Programming is Difficult"
 date: 2023-10-22
 ---
 
