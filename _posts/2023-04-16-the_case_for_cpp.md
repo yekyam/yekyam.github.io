@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "The Beginner's Axioms"
+title: "The Case for C++"
 ---
 
 # Formalizing C Patterns: The Case for C++
