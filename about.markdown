@@ -6,7 +6,7 @@ permalink: /about/
 
 Hi, I'm Manuel Mateo.
 
-I'm a freshman at Loyola University Maryland. I'm on track to graduate in 2026 with a BS in computer science.
+I'm a sophomore at Loyola University Maryland. I'm on track to graduate in 2026 with a BS in computer science.
 
 I'm most experienced in C++, C, and Python.
 
