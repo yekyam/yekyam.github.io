@@ -1,10 +1,8 @@
 ---
 layout: post
-title: "The Case for C++"
+title: "Formalizing C Patterns: The Case for C++"
 date: 2023-04-16
 ---
-
-# Formalizing C Patterns: The Case for C++
 
 Original post found [here](https://dev.to/yekyam/formalizing-c-patterns-the-case-for-c-481o/)
 
