@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Formalizing C Patterns: The Case for C++"
+title: "Programmng is Difficult"
 date: 2023-10-22
 ---
 

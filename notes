@@ -1,0 +1,5 @@
+- add a tab for articles (probably just need to update menus.yml and change _posts to _articles)
+- add a tab for projects (probably just need to update menus.yml and to _projects)
+
+nevermind, looks difficult. maybe add a tag to posts in the header (tags: project or tags:article) and try to filter like that
+	wll need to add a articles.html and projects.html
