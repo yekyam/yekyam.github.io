@@ -38,7 +38,7 @@ I have some experience with:
 
 I've worked at :
 - MousePaw Media, September 2020 - September 2021, Software Development Intern
-- Agile Inc., January 2021 - Current, Software Development Intern
+- Agile Inc., January 2022 - Current, Software Development Intern
 
 ## Contact
 
