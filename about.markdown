@@ -24,7 +24,7 @@ And there's more on my [github](https://github.com/yekyam).
 
 ## Experience
 
-I'm most experienced in:
+I'm most experienced with:
 - C++
 - C
 - Python
