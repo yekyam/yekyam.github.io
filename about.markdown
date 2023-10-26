@@ -4,21 +4,44 @@ title: About
 permalink: /about/
 ---
 
+
+## General
+
 Hi, I'm Manuel Mateo.
 
 I'm a sophomore at Loyola University Maryland. I'm on track to graduate in 2026 with a BS in computer science.
 
-I'm most experienced in C++, C, and Python.
+## Personal Projects
 
-[//]: This is the base Jekyll theme. You can find out more info about customizing your Jekyll theme, as well as basic Jekyll usage documentation at [jekyllrb.com](https://jekyllrb.com/)
+Here are some of my favorite personal projects I've made:
 
-[//]: You can find the source code for Minima at GitHub:
-[//]: [jekyll][jekyll-organization] /
-[//]: [minima](https://github.com/jekyll/minima)
+- [A Simple OpenGL Interpreter](https://github.com/yekyam/SOGL-Renderer)
+- [A C++ Argument Parser](https://github.com/yekyam/YAGP)
+- [A N-Body Simulation](https://github.com/yekyam/N-Body-Sim)
 
-[//]: You can find the source code for Jekyll at GitHub:
-[//]: [jekyll][jekyll-organization] /
-[//]: [jekyll](https://github.com/jekyll/jekyll)
+And there's more on my [github](https://github.com/yekyam).
 
 
-[//]: [jekyll-organization]: https://github.com/jekyll
+## Experience
+
+I'm most experienced in:
+- C++
+- C
+- Python
+- Java
+- Rust
+
+I have some experience with:
+- JavaScript/TypeScript
+- CSS
+- HTML
+
+I've worked at :
+- MousePaw Media, September 2020 - September 2021, Software Development Intern
+- Agile Inc., January 2021 - Current, Software Development Intern
+
+## Contact
+
+Feel free to reach out to me by email: manuel.mateo1357@gmail.com
+
+
