@@ -17,7 +17,10 @@ Here are some of my favorite personal projects I've made:
 
 - [Simple OpenGL Interpreter](https://github.com/yekyam/SOGL-Renderer)
 - [C++ Argument Parser](https://github.com/yekyam/YAGP)
-- [N-Body Simulation](https://github.com/yekyam/N-Body-Sim)
+- [N-Body Planet Simulation](https://github.com/yekyam/N-Body-Sim)
+
+![Video of an N-Body Simulation running](https://github.com/yekyam/yekyam.github.io/assets/53839024/e9081f8b-2161-4ff0-b6b6-03601d991223)
+
 
 And there's more on my [github](https://github.com/yekyam).
 
