@@ -15,7 +15,7 @@ I'm a sophomore at Loyola University Maryland. I'm on track to graduate in 2026 
 
 Here are some of my favorite personal projects I've made:
 
-- [Simple OpenGL Interpreter](https://github.com/yekyam/SOGL-Renderer)
+- [Simple OpenGL Renderer](https://github.com/yekyam/SOGL-Renderer)
 - [C++ Argument Parser](https://github.com/yekyam/YAGP)
 - [N-Body Planet Simulation](https://github.com/yekyam/N-Body-Sim)
 
