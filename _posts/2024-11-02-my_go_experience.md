@@ -51,7 +51,7 @@ probably learned Python. They’re not capable of understanding a brilliant lang
 them to build good software. So, the language that we give them has to be easy for them to understand and 
 easy to adopt. - Rob Pike
 
-(Source)[https://www.youtube.com/watch?v=uwajp0g-bY4]
+[Source](https://www.youtube.com/watch?v=uwajp0g-bY4)
 
 Some people absolutely hate this quote. They find that it's an affront to their intellect, and for that reason 
 alone, Go should be avoided.
