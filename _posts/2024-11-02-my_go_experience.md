@@ -8,8 +8,8 @@ date: 2024-11-02
 
 Yes! Go (or golang, Google's pet project, python-replacer-inator 5000, whatever you'd like to call it), has 
 been sitting in my "Languages I should at least build one project in" list for quite some time. I'm not even 
-sure why language has been on my radar; from what I remember I just liked the idea of a python-like language
-with the performance of C. I read about a bunch of Go CLI apps, and that niche just clicked a spot in my brain that
+sure why the language has been on my radar; from what I remember I just liked the idea of a python-like language
+with the performance of C. Also, I read about a bunch of Go CLI apps, and that niche just clicked a spot in my brain that
 somehow conviced me to give it a try.
 
 ## Why a Music Player?
@@ -22,7 +22,7 @@ For this project, I decided to keep the feature set very small:
 - Be able to play music from a library
     - The player should have basic controls, like skip forward/back, pause/play, loop
     - Ideally some sort of progress bar
-- Be able to add and delete songs
+- Be able to add and delete songs to a library
     - Should be able to add songs given a youtube link or a file path
 
 ## Pros of Go
@@ -61,7 +61,7 @@ an "easy to write and easy to read" paradigm, especially for beginners, is a gre
 
 I find myself somewhere in the middle. There are *absolutely* bad programmers; by definition, half of all programmers
 are below average (and frankly, I'm probably in that bottom half since I'm still a student). However, I can't help
-but look at the limited feature set and think to myself: "Man, if only I had x feature, this would probably look a 
+but look at the limited feature set and think to myself: "Man, if only I had x feature, this code would probably look a 
 little cleaner". For a small script like the one I wrote, a small feature set isn't a bad thing. But it doesn't take
 an amazing programmer to see when this can be an issue (especially the whole `if err != nil` sprinkled everywhere).
 
