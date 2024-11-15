@@ -63,7 +63,7 @@ I find myself somewhere in the middle. There are *absolutely* bad programmers; b
 are below average (and frankly, I'm probably in that bottom half since I'm still a student). However, I can't help
 but look at the limited feature set and think to myself: "Man, if only I had x feature, this code would probably look a 
 little cleaner". For a small script like the one I wrote, a small feature set isn't a bad thing. But it doesn't take
-an amazing programmer to see when this can be an issue (especially the whole `if err != nil` sprinkled everywhere).
+an amazing programmer to see when this can be an issue (especially with the whole `if err != nil` sprinkled everywhere).
 
 
 ### Build System
@@ -74,13 +74,13 @@ an older criticism.
 
 ### Speed
 
-Despite being a GC and compiled language, Go is both fast to run and fast to build. This is something that I didn't
+Despite having a garbage collector and being compiled, Go is both fast to run and fast to build. This is something that I didn't
 notice until I went back and used some older python projects, and realized the half-second startup time was something
 Go actually de-accustomed me to. 
 
 ### Extensive Standard Library
 
-I haven't played around too much, but the standard library seems to be pretty nice to use. It's got lots of 
+I haven't played around with Go's standard library too much, but the standard library seems to be pretty nice to use. It's got lots of 
 functionality, and unlike other languages, I didn't feel the need to reach for a 3rd party library every other 
 second (I'm looking at you, C++).
 
@@ -95,13 +95,13 @@ catch bugs for me instead of having them crop up randomly during runtime is alwa
 
 Holy cow. Why is this something that Go doesn't advertise and shout from the heavens about?? Go actually makes
 concurrency--dare I say--easy and fun. The fact that I can spawn a (pseudo-)thread with one keyword is actually
-quite ridiculous, in a good way. Go definitely has the easiest thread model I've come across by far.
+quite ridiculous, in a good way. Go definitely has the easiest thread model I've come across by far (though Rust also comes close).
 
 ## Cons
 
 ### Error Handling
 
-As simple as `if err != nil` is, I think it's still worse than dealing with `Optional` types or even `Result` 
+As simple as `if err != nil` is, I think it's still worse than dealing with `Optional` and `Result` 
 types. At the very least, it'd be nice to have some shorthand for the `if err != nil {return T{}, err}`, maybe 
 something like Rust's `?` operator.
 
