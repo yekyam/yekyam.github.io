@@ -9,7 +9,7 @@ permalink: /about/
 
 Hi, I'm Manuel Mateo.
 
-I'm a junior at Loyola University Maryland. I'm on track to graduate in 2026 with a BS in computer science.
+I'm a senior at Loyola University Maryland. I'm on track to graduate in 2026 with a BS in computer science.
 
 ## Personal Projects
 
@@ -34,6 +34,7 @@ I'm most experienced with:
 - Python
 - Java
 - Rust
+- Golang
 
 I have some experience with:
 - JavaScript/TypeScript
@@ -42,7 +43,8 @@ I have some experience with:
 
 I've worked at :
 - MousePaw Media, September 2020 - September 2021, Software Development Intern
-- Agile Inc., January 2022 - Current, Software Development Intern
+- Agile Inc., January 2022 - May 2025, Software Development Intern
+- Protiviti, June 2025 - August 2025, Software Development Intern
 
 ## Contact
 

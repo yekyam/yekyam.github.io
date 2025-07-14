@@ -4,6 +4,15 @@ title: "Hot Take: Use Golang Over Python in New Project at Work"
 date: 2025-07-14
 ---
 
+<!--toc:start-->
+- [Intro](#intro)
+- [Dependency Management](#dependency-management)
+  - [Python](#python)
+  - [Golang](#golang)
+- [Type Systems](#type-systems)
+- [Speed](#speed)
+<!--toc:end-->
+
 ## Intro
 
 This'll be a shorter article detailing why greenfield projects should be written 
