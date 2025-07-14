@@ -1,32 +1,46 @@
 ---
 layout: post
-title: "Formalizing C Patterns: The Case for C++"
+title: "Formalizing C Patterns: The Case for CPP"
 date: 2023-04-16
 ---
+
+<!--toc:start-->
+- [Background](#background)
+- [My Take](#my-take)
+- [Formalizing?](#formalizing)
+- [Generic Objects - C](#generic-objects-c)
+- [Generic Objects - CPP](#generic-objects-cpp)
+- [Cleanup - C](#cleanup-c)
+- [Cleanup - CPP](#cleanup-cpp)
+- [Data Hiding - C](#data-hiding-c)
+- [Data Hiding - CPP](#data-hiding-cpp)
+- [Did you see the error?](#did-you-see-the-error)
+- [Wrapping Up](#wrapping-up)
+<!--toc:end-->
 
 Original post found [here](https://dev.to/yekyam/formalizing-c-patterns-the-case-for-c-481o/)
 
 
 ## Background
 
-Online, I see a lot of discourse surrounding C and C++. It makes sense; both languages are related, and they fit very similar niches. C programmers typically describe C++ as bloated, overcomplicated, obtuse, and so on.
+Online, I see a lot of discourse surrounding C and CPP. It makes sense; both languages are related, and they fit very similar niches. C programmers typically describe CPP as bloated, overcomplicated, obtuse, and so on.
 
-[Here's one of the most famous examples of a C programmer arguing against C++, by one of the most famous programmers of all time: Linus Torvalds](http://harmful.cat-v.org/software/c++/linus). As seen in Torvalds' rant, one key piece missing from these discussions are concrete, technical arguments. Although Torvalds is a far better programmer than I am, his argument features charged language with non-concrete examples.
+[Here's one of the most famous examples of a C programmer arguing against CPP, by one of the most famous programmers of all time: Linus Torvalds](http://harmful.cat-v.org/software/CPP/linus). As seen in Torvalds' rant, one key piece missing from these discussions are concrete, technical arguments. Although Torvalds is a far better programmer than I am, his argument features charged language with non-concrete examples.
 
 This article serves as a way to document my own thoughts on the subject matter, explicitly states concrete arguments, and is a time capsule for future me to look back on.
 
 ## My Take 
 
-C++ can do everything that C can, but the opposite is not true.
+CPP can do everything that C can, but the opposite is not true.
 
-In online discussions, people tend to forget that C++ is the natural evolution of C. If C is bulbasaur, C++ is ivysaur. Because C++ did not come out of thin air, and because it does not aim to replace C, C++ borrows, formalizes, and improves plenty of common C techniques and paradigms.
+In online discussions, people tend to forget that CPP is the natural evolution of C. If C is bulbasaur, CPP is ivysaur. Because CPP did not come out of thin air, and because it does not aim to replace C, CPP borrows, formalizes, and improves plenty of common C techniques and paradigms.
 
 
 ## Formalizing?
 
-C++ wasn’t created in a vacuum. It was created after years of C programming, meaning C++ had a lot of experience in what patterns worked and what didn’t. It moved these design patterns into formal language features instead of letting the users hand roll them.
+CPP wasn’t created in a vacuum. It was created after years of C programming, meaning CPP had a lot of experience in what patterns worked and what didn’t. It moved these design patterns into formal language features instead of letting the users hand roll them.
 
-*This means that good C code tends to be a more primitive version of good C++ code.*
+*This means that good C code tends to be a more primitive version of good CPP code.*
 
 ## Generic Objects - C
 
@@ -83,9 +97,9 @@ Let’s identify what makes this good C code:
 - We have a good interface to interact with our structure
 - Our structure is generic, meaning we can reuse our code without duplicating it for other types.
 
-## Generic Objects - C++
+## Generic Objects - CPP
 
-C++ looks at what went right and formalizes it though the language and type system.
+CPP looks at what went right and formalizes it though the language and type system.
 
 The proper way of doing what we did in the C code would look something like this:
 
@@ -105,7 +119,7 @@ struct Vec2
 };
 ```
 
-In this example, we have the help of the compiler to enforce type safety, and we don't have to deal with macros. C++ formalizes the generic object pattern into a built-in language feature.
+In this example, we have the help of the compiler to enforce type safety, and we don't have to deal with macros. CPP formalizes the generic object pattern into a built-in language feature.
 
 We also don't need to worry about passing in an `add` function to our code. Why? Because operator overloading exists, and the `+` operator should be defined for the type passed in. Using traits, we can even expand the code to check if `T` implements the operator and report errors at compile time. Sweet.
 
@@ -145,11 +159,11 @@ no_cleanup:
 
 Here, we've organized our code in a way where we bail out of normal execution into our cleanup code if we encounter any problems. Without `goto`, our code would be a mess of nested if statements, increasing depth every time we add a new resource.
 
-## Cleanup - C++
+## Cleanup - CPP
 
-C++ once again formalizes a good C pattern. In this case, the formalized pattern is called RAII.
+CPP once again formalizes a good C pattern. In this case, the formalized pattern is called RAII.
 
-In C++, we can use RAII to cleanup objects at the end of their lifetimes.
+In CPP, we can use RAII to cleanup objects at the end of their lifetimes.
 
 ```
 void some_func(const std::string& filename)
@@ -242,9 +256,9 @@ typedef struct dynamic_string_array_t {
 
 ```
 
-## Data Hiding - C++
+## Data Hiding - CPP
 
-In C++, the default way is easy: just mark the fields as private, or in the case of a class, don't mark the fields public. This allows our code to be header only, which can be nice.
+In CPP, the default way is easy: just mark the fields as private, or in the case of a class, don't mark the fields public. This allows our code to be header only, which can be nice.
 
 ```
 class DynamicStringArray
@@ -263,7 +277,7 @@ public:
 
 In the section "Data Hiding - C" I purposefully left a bug. Instead of allocating space and copying the contents of the `char*` parameter, I directly stored the pointer into the array. This is a bug; there is no guarantee that the string is properly managed. If our dynamic array outlives the string, then the pointer would point to garbage memory. If the string is not null-terminated, that would also lead to potential bugs.
 
-In C++, we usually don't need to worry about string handling issues like this. Non-reference object parameters automatically call their respective copy constructors, meaning we wouldn't need to worry about copying our string. On top of that, `std::string` manages the contents of our string, meaning we don't need to worry if the internal array is null-terminated or not (unless constructing from a char*).  
+In CPP, we usually don't need to worry about string handling issues like this. Non-reference object parameters automatically call their respective copy constructors, meaning we wouldn't need to worry about copying our string. On top of that, `std::string` manages the contents of our string, meaning we don't need to worry if the internal array is null-terminated or not (unless constructing from a char*).  
 
 ## Wrapping Up
 
@@ -278,4 +292,4 @@ The list goes on, seriously. I could've talked about:
 
 But at that point, this article would turn into a short book.
 
-I'd like to reiterate my earlier point: C++ can do everything that C can. If you take issue with any of these features, there's nothing forcing you to use them. C++ features are *opt in*; if you don't want to use them, there's no penalty. Even if you use only 1 C++ feature, then it's worth the switch.
+I'd like to reiterate my earlier point: CPP can do everything that C can. If you take issue with any of these features, there's nothing forcing you to use them. CPP features are *opt in*; if you don't want to use them, there's no penalty. Even if you use only 1 CPP feature, then it's worth the switch.

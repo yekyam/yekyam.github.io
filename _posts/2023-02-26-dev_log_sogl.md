@@ -4,6 +4,16 @@ title: "Dev Log: Extremely Basic OpenGL Renderer"
 date: 2023-02-26
 ---
 
+<!--toc:start-->
+- [Some Background](#some-background)
+- [Starting the Project](#starting-the-project)
+- [Building out abstractions](#building-out-abstractions)
+- [Loading Models from Files](#loading-models-from-files)
+- [Finishing Touches](#finishing-touches)
+- [Final Thoughts and Next Steps](#final-thoughts-and-next-steps)
+    - [Tips for other OpenGL beginners](#tips-for-other-opengl-beginners)
+<!--toc:end-->
+
 Original post found [here](https://dev.to/yekyam/dev-log-extremely-basic-opengl-renderer-i40) 
 
 ## Some Background

@@ -4,6 +4,18 @@ title: "Is Documentation Worth the Effort?"
 date: 2025-07-14
 ---
 
+<!--toc:start-->
+- [Intro](#intro)
+- [A Short Answer](#a-short-answer)
+- [A Longer Answer](#a-longer-answer)
+- [What is Documentation??](#what-is-documentation)
+- [What are the advantages of creating documentation?](#what-are-the-advantages-of-creating-documentation)
+- [What are the disadvantages?](#what-are-the-disadvantages)
+  - [So, is documentation worth writing?](#so-is-documentation-worth-writing)
+- [A and the Super-Awesome-MVP](#a-and-the-super-awesome-mvp)
+- [Conclusion](#conclusion)
+<!--toc:end-->
+
 ## Intro
 
 The debate around documentation has always been a heated one. One group of 

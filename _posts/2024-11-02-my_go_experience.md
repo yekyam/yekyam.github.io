@@ -4,6 +4,22 @@ title: "My Experience with Go as a Beginner: Building a CLI Music Player"
 date: 2024-11-02
 ---
 
+<!--toc:start-->
+- [Go?](#go)
+- [Why a Music Player?](#why-a-music-player)
+- [Pros of Go](#pros-of-go)
+  - [Weirdly productive language](#weirdly-productive-language)
+  - [Build System](#build-system)
+  - [Speed](#speed)
+  - [Extensive Standard Library](#extensive-standard-library)
+  - [Defer](#defer)
+  - [Static Typing](#static-typing)
+  - [Last, but certainly not least, Goroutines](#last-but-certainly-not-least-goroutines)
+- [Cons](#cons)
+  - [Error Handling](#error-handling)
+- [Closing Thoughts](#closing-thoughts)
+<!--toc:end-->
+
 ## Go?
 
 Yes! Go (or golang, Google's pet project, python-replacer-inator 5000, whatever you'd like to call it), has 

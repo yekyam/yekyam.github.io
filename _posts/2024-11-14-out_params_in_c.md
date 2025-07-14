@@ -4,6 +4,18 @@ title: "Let's All Agree to Stop Using Out Params In C"
 date: 2024-11-14
 ---
 
+<!--toc:start-->
+- [Background](#background)
+- [What are Out Params?](#what-are-out-params)
+- [Why not use out params?](#why-not-use-out-params)
+- [What's the alternative?](#whats-the-alternative)
+- [When is it okay to use out params?](#when-is-it-okay-to-use-out-params)
+- [How to make out params less ambiguous?](#how-to-make-out-params-less-ambiguous)
+  - [Mark non-out params as const](#mark-non-out-params-as-const)
+  - [Name parameters with an out prefix or suffix](#name-parameters-with-an-out-prefix-or-suffix)
+- [Conclusion](#conclusion)
+<!--toc:end-->
+
 ## Background
 
 Hi, my name is Manuel, thank you for welcoming me to your therapy group.
